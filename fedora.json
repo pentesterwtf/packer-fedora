@@ -1,0 +1,65 @@
+{
+  "variables": {
+    "iso_url": "https://mirror.aarnet.edu.au/pub/fedora/linux/releases/30/Workstation/x86_64/iso/Fedora-Workstation-netinst-x86_64-30-1.2.iso",
+    "iso_checksum": "28c94f90adc926ea035d56f5bf59058a9305566adb70c0c50d7a13fc6ab838cf",
+    "iso_checksum_type": "sha256",
+    "disk_size": "40960",
+    "memory_size": "4096",
+    "cpus": "4",
+    "vm_name":"fedora-30-libvirt",
+    "headless":"true"
+  },
+  "builders": [
+    {
+      "type": "qemu",
+      "accelerator": "kvm",
+      "iso_url": "{{user `iso_url`}}",
+      "iso_checksum": "{{user `iso_checksum`}}",
+      "iso_checksum_type": "{{user `iso_checksum_type`}}",
+      "headless":"{{user `headless`}}",
+      "vm_name": "{{user `vm_name`}}",
+      "cpus": "{{ user `cpus`}}",
+      "memory": "{{ user `memory_size`}}",
+      "http_directory": "http",
+      "format": "qcow2",
+      "disk_size": "{{user `disk_size`}}",
+      "disk_interface": "virtio",
+      "ssh_username": "vagrant",
+      "ssh_password": "vagrant",
+      "ssh_wait_timeout": "120m",
+      "boot_wait": "5s",
+      "boot_command": [
+        "<up><tab> ip=dhcp inst.cmdline inst.ks=http://{{.HTTPIP}}:{{.HTTPPort}}/ks.cfg<enter>"
+      ],
+      "shutdown_command": "echo vagrant | sudo -S poweroff",
+      "qemuargs": [
+        ["--cpu", "host"],
+        ["-vga", "qxl"]
+      ]
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "expect_disconnect": true,
+      "execute_command": "echo vagrant | sudo -S bash {{.Path}}",
+      "scripts": [
+        "scripts/common/update.sh",
+        "scripts/common/install.sh",
+        "scripts/common/sshd.sh",
+        "scripts/common/vagrant.sh",
+        "scripts/fedora/custom.sh",
+        "scripts/common/cleanup.sh",
+        "scripts/common/minimize.sh"
+      ]
+    }
+  ],
+  "post-processors": [
+    {
+      "type": "vagrant",
+      "output": "builds/{{user `vm_name`}}.box",
+      "vagrantfile_template": "Vagrantfile.template",
+      "keep_input_artifact": true
+    }
+  ]
+}
