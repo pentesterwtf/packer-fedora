@@ -1,8 +1,8 @@
-# Fedora 30 Workstation
+# Fedora 31 Workstation
 
 ## What
 
-* Fedora 30, with Desktop Environment
+* Fedora 31, with Desktop Environment
 * For vagrant Libvirt provider (https://github.com/vagrant-libvirt/vagrant-libvirt)
 * Produces a vagrant box (https://www.vagrantup.com/) under `builds/`
     * Box is ~XXXXHUNDREDMB after building
