@@ -26,6 +26,7 @@
       "format": "qcow2",
       "disk_size": "{{user `disk_size`}}",
       "disk_interface": "virtio",
+      "disk_compression": "true",
       "ssh_username": "vagrant",
       "ssh_password": "vagrant",
       "ssh_wait_timeout": "120m",
