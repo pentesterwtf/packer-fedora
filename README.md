@@ -17,7 +17,7 @@ vagrant/vagrant
 ## Building
 
 * packer build fedora.json
-* vagrant box add builds/fedora-28-libvirt.box
+* vagrant box add builds/fedora-31-libvirt.box
   * Note libvirt keeps disks, might have to delete from filestore if re-adding
   * --force won't help you
 
